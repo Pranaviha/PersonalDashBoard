@@ -1,0 +1,738 @@
+:root {
+    /* Dark Theme (Default) */
+    --bg-color-1: #0f172a;
+    --bg-color-2: #1e1b4b;
+    --text-color: #f8fafc;
+    --text-muted: #cbd5e1;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-hover: rgba(255, 255, 255, 0.08);
+    --input-bg: rgba(0, 0, 0, 0.2);
+    --input-focus: rgba(0, 0, 0, 0.4);
+    --accent-color: #8b5cf6;
+    --accent-hover: #a78bfa;
+    --danger-color: #ef4444;
+    --success-color: #10b981;
+}
+
+body.light-mode {
+    /* Light Theme */
+    --bg-color-1: #f1f5f9;
+    --bg-color-2: #e2e8f0;
+    --text-color: #0f172a;
+    --text-muted: #475569;
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.8);
+    --glass-hover: rgba(255, 255, 255, 0.9);
+    --input-bg: rgba(255, 255, 255, 0.8);
+    --input-focus: #ffffff;
+    --accent-color: #6366f1;
+    --accent-hover: #4f46e5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--bg-color-1), var(--bg-color-2));
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    transition: background 0.5s ease, color 0.5s ease;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    width: 100%;
+}
+
+/* Top Nav */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    max-width: 400px;
+    transition: all 0.3s;
+}
+
+.search-container:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+}
+
+.search-icon {
+    margin-right: 0.5rem;
+    opacity: 0.7;
+}
+
+#global-search {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    outline: none;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.icon-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background: var(--glass-hover);
+    transform: scale(1.05);
+}
+
+.mic-btn.recording {
+    color: var(--danger-color);
+    animation: pulse 1.5s infinite;
+    border-color: var(--danger-color);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.dashboard-header h1 {
+    font-size: 2.8rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+#user-name {
+    border-bottom: 2px dashed var(--glass-border);
+    outline: none;
+    transition: all 0.3s ease;
+    cursor: text;
+    padding: 0 5px;
+}
+
+#user-name:focus {
+    border-color: var(--accent-color);
+    color: var(--accent-hover);
+}
+
+/* Base grid layout */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    /* grid-auto-rows: dense encourages filling gaps */
+    grid-auto-flow: dense;
+}
+
+/* Glassmorphism styling */
+.glassmorphism {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Drag & Drop Styles */
+.glassmorphism[draggable="true"] .drag-handle {
+    cursor: grab;
+}
+
+.glassmorphism[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.glassmorphism.dragging {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+.glassmorphism.drag-over {
+    border: 2px dashed var(--accent-color);
+    background: var(--glass-hover);
+}
+
+.drag-handle {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+}
+
+.glassmorphism:hover .drag-handle {
+    opacity: 0.8;
+}
+
+.widget h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: default;
+}
+
+/* Clock Widget */
+.clock-widget {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    grid-column: span 1;
+}
+
+.time-display {
+    font-size: 4rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color);
+}
+
+.date-display {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* Weather Widget */
+.weather-widget {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.weather-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.weather-icon {
+    font-size: 3rem;
+}
+
+#temperature {
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+#weather-desc,
+#weather-city {
+    font-size: 1rem;
+    color: var(--text-muted);
+    text-transform: capitalize;
+}
+
+/* Productivity Stats Widget */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+}
+
+.stat-box {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Pomodoro Timer Widget */
+.pomodoro-display {
+    font-size: 3.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 1rem 0;
+    letter-spacing: 2px;
+}
+
+.pomodoro-controls,
+.pomodoro-modes {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.mode-btn {
+    padding: 0.5rem 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.mode-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+/* Generic Inputs and Buttons */
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    outline: none;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s;
+}
+
+input[type="text"]::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    background: var(--input-focus);
+    border-color: var(--accent-color);
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 0.8rem 1.2rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--glass-bg);
+    color: var(--text-color);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-secondary:hover {
+    background: var(--glass-hover);
+}
+
+/* Forms layout */
+#todo-form,
+#habit-form,
+#note-form,
+.calendar-event-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#todo-input,
+#habit-input,
+#cal-event-input {
+    flex: 1;
+}
+
+/* Lists styling */
+.scrollable-list {
+    list-style: none;
+    overflow-y: auto;
+    flex: 1;
+    max-height: 250px;
+    padding-right: 5px;
+}
+
+.scrollable-list li,
+.note-item,
+.habit-item {
+    background: var(--input-bg);
+    border: 1px solid var(--glass-border);
+    padding: 0.8rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s;
+}
+
+.scrollable-list li:hover,
+.note-item:hover,
+.habit-item:hover {
+    background: var(--glass-hover);
+}
+
+/* To-Do Specific */
+.todo-widget {
+    grid-row: span 2;
+}
+
+#todo-list li.completed .todo-text {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.todo-text {
+    flex: 1;
+    margin-left: 0.8rem;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color);
+    cursor: pointer;
+}
+
+/* Delete / Action Buttons */
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.6;
+}
+
+.delete-btn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    opacity: 1;
+}
+
+.edit-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    opacity: 0.6;
+}
+
+.edit-btn:hover {
+    opacity: 1;
+}
+
+/* Notes Widget */
+.notes-widget {
+    grid-row: span 2;
+}
+
+#note-input {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.note-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.note-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+}
+
+.note-body {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    white-space: pre-wrap;
+    width: 100%;
+    word-break: break-word;
+}
+
+.note-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.note-controls {
+    display: flex;
+}
+
+/* Habit Tracker Specific */
+.habit-widget {
+    grid-row: span 2;
+}
+
+.habit-item {
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.habit-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-weight: 600;
+}
+
+.days-grid {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.day-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: var(--input-bg);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.day-btn:hover {
+    background: var(--glass-hover);
+}
+
+.day-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+/* Calendar Widget */
+.calendar-widget {
+    grid-row: span 2;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.calendar-grid-header,
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    gap: 5px;
+}
+
+.calendar-grid-header span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.cal-day:hover {
+    background: var(--glass-hover);
+    border-color: var(--glass-border);
+}
+
+.cal-day.today {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: var(--accent-color);
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.cal-day.selected {
+    background: var(--accent-color);
+    color: white;
+}
+
+.cal-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-hover);
+    border-radius: 50%;
+}
+
+.cal-day {
+    position: relative;
+}
+
+/* For the dot */
+
+/* Toasts */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.toast {
+    background: var(--accent-color);
+    color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.4);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+}

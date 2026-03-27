@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Productivity Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-mode"> <!-- default theme -->
+    <div class="dashboard-container">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="global-search" placeholder="Search tasks and notes...">
+            </div>
+            <button id="theme-toggle" class="icon-btn" title="Toggle Theme">🌓</button>
+        </nav>
+
+        <header class="dashboard-header">
+            <h1><span id="greeting-text">Good Morning</span>, <span id="user-name" contenteditable="true"
+                    spellcheck="false">User</span></h1>
+        </header>
+
+        <main class="grid-layout" id="widget-grid">
+
+            <!-- Clock Widget -->
+            <section class="widget clock-widget glassmorphism" id="widget-clock" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <div id="time" class="time-display">00:00</div>
+                <div id="date" class="date-display">Monday, Jan 1</div>
+            </section>
+
+            <!-- Weather Widget -->
+            <section class="widget weather-widget glassmorphism" id="widget-weather" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Weather</h2>
+                <div class="weather-content" id="weather-content">
+                    <div class="weather-icon">🌤️</div>
+                    <div class="weather-info">
+                        <span id="temperature">--°C</span>
+                        <span id="weather-desc">Loading...</span>
+                        <div id="weather-city">Locating...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Productivity Stats Widget -->
+            <section class="widget stats-widget glassmorphism" id="widget-stats" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Productivity Stats</h2>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-number" id="stat-tasks">0</span>
+                        <span class="stat-label">Tasks Done</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number" id="stat-habits">0%</span>
+                        <span class="stat-label">Habit Consistency</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pomodoro Timer Widget -->
+            <section class="widget pomodoro-widget glassmorphism" id="widget-pomodoro" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Pomodoro Timer</h2>
+                <div class="pomodoro-display" id="pomodoro-time">25:00</div>
+                <div class="pomodoro-controls">
+                    <button class="btn-primary" id="pomodoro-start">Start</button>
+                    <button class="btn-secondary" id="pomodoro-pause">Pause</button>
+                    <button class="btn-secondary" id="pomodoro-reset">Reset</button>
+                </div>
+                <div class="pomodoro-modes">
+                    <button class="mode-btn active" data-time="25">Work</button>
+                    <button class="mode-btn" data-time="5">Break</button>
+                </div>
+            </section>
+
+            <!-- To-Do List Widget -->
+            <section class="widget todo-widget glassmorphism" id="widget-todo" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>To-Do List</h2>
+                <form id="todo-form">
+                    <input type="text" id="todo-input" placeholder="Add a new task..." required>
+                    <button type="button" class="icon-btn mic-btn" id="todo-mic" title="Voice Input">🎤</button>
+                    <button type="submit" class="btn-primary">Add</button>
+                </form>
+                <ul id="todo-list" class="scrollable-list"></ul>
+            </section>
+
+            <!-- Notes Widget -->
+            <section class="widget notes-widget glassmorphism" id="widget-notes" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Notes</h2>
+                <form id="note-form">
+                    <input type="text" id="note-title" placeholder="Note Title (optional)">
+                    <textarea id="note-input" placeholder="Type your note here..." required></textarea>
+                    <div class="note-actions">
+                        <button type="button" class="icon-btn mic-btn" id="note-mic" title="Voice Input">🎤</button>
+                        <button type="submit" class="btn-primary">Save Note</button>
+                    </div>
+                </form>
+                <div id="notes-list" class="scrollable-list"></div>
+            </section>
+
+            <!-- Habit Tracker Widget -->
+            <section class="widget habit-widget glassmorphism" id="widget-habit" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Habit Tracker</h2>
+                <form id="habit-form">
+                    <input type="text" id="habit-input" placeholder="New habit..." required>
+                    <button type="submit" class="btn-primary">+</button>
+                </form>
+                <div id="habit-list" class="scrollable-list"></div>
+            </section>
+
+            <!-- Book List Widget -->
+            <section class="widget books-widget glassmorphism" id="widget-books" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <h2>Reading List</h2>
+                <form id="book-form">
+                    <input type="text" id="book-input" placeholder="Add a book to read..." required>
+                    <button type="submit" class="btn-primary">Add</button>
+                </form>
+                <ul id="book-list" class="scrollable-list"></ul>
+            </section>
+
+            <!-- Calendar Widget -->
+            <section class="widget calendar-widget glassmorphism" id="widget-calendar" draggable="true">
+                <div class="drag-handle" title="Drag to reorder">≡</div>
+                <div class="calendar-header">
+                    <button id="prev-month" class="icon-btn">◀</button>
+                    <h2 id="month-year">Month Year</h2>
+                    <button id="next-month" class="icon-btn">▶</button>
+                </div>
+                <div class="calendar-grid-header">
+                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                </div>
+                <div class="calendar-grid" id="calendar-days"></div>
+                <!-- Simple Event interface -->
+                <div class="calendar-event-form">
+                    <input type="text" id="cal-event-input" placeholder="Event for selected day...">
+                    <button id="add-cal-event" class="btn-primary">+</button>
+                </div>
+                <ul id="cal-event-list" class="scrollable-list"></ul>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
